@@ -3,6 +3,7 @@ import { Inter } from "@next/font/google";
 import MainLayout from "@/components/MainLayout";
 import { convertCompilerOptionsFromJson } from "typescript";
 import { useState } from "react";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,6 +45,17 @@ export default function Home() {
             className="h-10 w-10 bg-sky-400 rounded-full ml-4"
           ></button>
         </div>
+        {noteItems.map((item) => (
+          <li key={item.title}>
+            <div className="list-decimal border-2">
+              <div className="flex">
+                <p>{item.title}</p>
+                {item.url && <link>{item.url}</link>}
+              </div>
+              <p>{item.explanation}</p>
+            </div>
+          </li>
+        ))}
       </MainLayout>
     </>
   );

@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { Inter } from "@next/font/google";
 import MainLayout from "@/components/MainLayout";
+import { convertCompilerOptionsFromJson } from "typescript";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,9 +12,9 @@ type NoteItem = {
 };
 
 function addNote(noteItems: NoteItem[]) {
-  const newNoteItem: NoteItem = {};
+  const newNoteItem: NoteItem = { title: "-", explanation: "~", url: "" };
   noteItems.push(newNoteItem);
-  alert(noteItems.length);
+  console.log(noteItems);
 }
 
 export default function Home() {

@@ -32,8 +32,7 @@ export default function Home() {
       url: "",
       id: noteItems.length,
     };
-    noteItems.push(newNoteItem);
-    setNoteItems(noteItems);
+    setNoteItems([...noteItems, newNoteItem]);
     console.log(noteItems);
   }
 

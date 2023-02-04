@@ -26,9 +26,12 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <MainLayout>
-        <div>
+        <div className="flex items-center justify-center">
           <p>Hello</p>
-          <button onClick={(e) => addNote(noteItems)} className=""></button>
+          <button
+            onClick={(e) => addNote(noteItems)}
+            className="h-10 w-10 bg-sky-400 rounded-full ml-4"
+          ></button>
         </div>
       </MainLayout>
     </>

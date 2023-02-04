@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { Inter } from "@next/font/google";
 import MainLayout from "@/components/MainLayout";
-import { convertCompilerOptionsFromJson } from "typescript";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -20,7 +19,7 @@ export default function Home() {
     {
       title: "initial title",
       explanation: "initial explanation",
-      url: "",
+      url: "/",
       id: 0,
     },
   ]);
@@ -51,17 +50,23 @@ export default function Home() {
             className="h-10 w-10 bg-sky-400 rounded-full ml-4"
           ></button>
         </div>
-        {noteItems.map((item) => (
-          <li key={item.id}>
-            <div className="list-decimal border-2">
-              <div className="flex">
-                <p>{item.title}</p>
-                {item.url && <link>{item.url}</link>}
+        <ol className="list-decimal mt-10">
+          {noteItems.map((item) => (
+            <li key={item.id} className="mt-7 border-b-2 border-dashed pb-3">
+              <div className="">
+                <div className="flex justify-between">
+                  <p className="underline font-bold italic">{item.title}</p>
+                  {item.url && (
+                    <Link href={item.url} className="text-sky-600 font-light">
+                      {item.url}
+                    </Link>
+                  )}
+                </div>
+                <p className="font-light">{item.explanation}</p>
               </div>
-              <p>{item.explanation}</p>
-            </div>
-          </li>
-        ))}
+            </li>
+          ))}
+        </ol>
       </MainLayout>
     </>
   );

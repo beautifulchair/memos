@@ -11,6 +11,7 @@ type NoteItem = {
   title?: string;
   explanation?: string;
   url?: string;
+  id: number;
 };
 
 export default function Home() {
@@ -20,11 +21,17 @@ export default function Home() {
       title: "initial title",
       explanation: "initial explanation",
       url: "",
+      id: 0,
     },
   ]);
 
   function addNote() {
-    const newNoteItem: NoteItem = { title: "-", explanation: "~", url: "" };
+    const newNoteItem: NoteItem = {
+      title: "-",
+      explanation: "~",
+      url: "",
+      id: noteItems.length,
+    };
     noteItems.push(newNoteItem);
     setNoteItems(noteItems);
     console.log(noteItems);
@@ -46,7 +53,7 @@ export default function Home() {
           ></button>
         </div>
         {noteItems.map((item) => (
-          <li key={item.title}>
+          <li key={item.id}>
             <div className="list-decimal border-2">
               <div className="flex">
                 <p>{item.title}</p>

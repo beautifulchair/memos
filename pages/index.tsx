@@ -35,6 +35,26 @@ export default function Home() {
     console.log(noteItems);
   }
 
+  const NoteTable = () => (
+    <ol className="list-decimal mt-10">
+      {noteItems.map((item) => (
+        <li key={item.id} className="mt-7 border-b-2 border-dashed pb-3">
+          <div className="">
+            <div className="flex justify-between">
+              <p className="underline font-bold italic">{item.title}</p>
+              {item.url && (
+                <Link href={item.url} className="text-sky-600 font-light">
+                  {item.url}
+                </Link>
+              )}
+            </div>
+            <p className="font-light">{item.explanation}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+
   return (
     <>
       <Head>
@@ -50,23 +70,7 @@ export default function Home() {
             className="h-10 w-10 bg-sky-400 rounded-full ml-4"
           ></button>
         </div>
-        <ol className="list-decimal mt-10">
-          {noteItems.map((item) => (
-            <li key={item.id} className="mt-7 border-b-2 border-dashed pb-3">
-              <div className="">
-                <div className="flex justify-between">
-                  <p className="underline font-bold italic">{item.title}</p>
-                  {item.url && (
-                    <Link href={item.url} className="text-sky-600 font-light">
-                      {item.url}
-                    </Link>
-                  )}
-                </div>
-                <p className="font-light">{item.explanation}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <NoteTable />
       </MainLayout>
     </>
   );

@@ -1,31 +1,12 @@
 import Head from "next/head";
-import { Inter } from "@next/font/google";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import Link from "next/link";
-
-const inter = Inter({ subsets: ["latin"] });
-
-type NoteItem = {
-  title?: string;
-  explanation?: string;
-  url?: string;
-  id: number;
-};
-
-function changeTitleAtId(noteItems: NoteItem[], title: string, id: number) {
-  let itemAtId = noteItems.find((item) => item.id === id);
-  if (itemAtId) itemAtId.title = title;
-}
-
-function changeExplanationAtId(
-  noteItems: NoteItem[],
-  explanation: string,
-  id: number
-) {
-  let itemAtId = noteItems.find((item) => item.id === id);
-  if (itemAtId) itemAtId.explanation = explanation;
-}
+import {
+  NoteItem,
+  changeTitleAtId,
+  changeExplanationAtId,
+} from "@/utils/noteItem";
 
 export default function Home() {
   // initial noteItems

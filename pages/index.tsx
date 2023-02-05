@@ -106,6 +106,8 @@ export default function Home() {
                 rows={1}
                 defaultValue={item.title}
                 onKeyDown={(e) => keyDownOnTitle(e, item)}
+                autoCorrect="off"
+                spellCheck="false"
               />
               {item.url && (
                 <Link href={item.url} className="text-sky-600 font-light">
@@ -119,6 +121,8 @@ export default function Home() {
               defaultValue={item.explanation}
               onKeyDown={(e) => keyDownOnExplanation(e, item)}
               onKeyDownCapture={(e) => keyDownCaputureOnExplanation(e)}
+              autoCorrect="off"
+              spellCheck="false"
             />
           </div>
         </li>

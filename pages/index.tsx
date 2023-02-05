@@ -13,6 +13,20 @@ type NoteItem = {
   id: number;
 };
 
+function changeTitleAtId(noteItems: NoteItem[], title: string, id: number) {
+  let itemAtId = noteItems.find((item) => item.id === id);
+  if (itemAtId) itemAtId.title = title;
+}
+
+function changeExplanationAtId(
+  noteItems: NoteItem[],
+  explanation: string,
+  id: number
+) {
+  let itemAtId = noteItems.find((item) => item.id === id);
+  if (itemAtId) itemAtId.explanation = explanation;
+}
+
 export default function Home() {
   // initial noteItems
   const [noteItems, setNoteItems] = useState<NoteItem[]>([
@@ -44,13 +58,10 @@ export default function Home() {
       e.preventDefault();
 
       const id: number = item.id;
-      const newItem = noteItems.filter((v) => v.id === id)[0];
       const target = e.currentTarget;
-      newItem.title = target.value;
-      const newNoteItems = noteItems.map((v) =>
-        v.id === item.id ? newItem : v
-      );
-      setNoteItems(newNoteItems);
+      changeTitleAtId(noteItems, target.value, id);
+      setNoteItems(noteItems);
+      target.blur();
     }
   }
 
@@ -65,12 +76,9 @@ export default function Home() {
       e.preventDefault();
 
       const id: number = item.id;
-      const newItem = noteItems.filter((v) => v.id === id)[0];
-      newItem.explanation = target.value;
-      const newNoteItems = noteItems.map((v) =>
-        v.id === item.id ? newItem : v
-      );
-      setNoteItems(newNoteItems);
+      changeExplanationAtId(noteItems, target.value, id);
+      setNoteItems(noteItems);
+      target.blur();
     } else if (e.key === "Enter" && e.shiftKey) {
       const lineN = target.rows;
       target.rows += 1;

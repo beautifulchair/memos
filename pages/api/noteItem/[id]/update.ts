@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { isExitAtId } from "@/utils/noteItem";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handle(
@@ -6,8 +7,7 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const id = req.query.id as string;
-  const item = await prisma.noteItem.findFirst({ where: { id: id } });
-  if (item) {
+  if (await isExitAtId(id, prisma)) {
     const { title, explanation, url } = req.body;
     const post = await prisma.noteItem.update({
       where: { id: id },

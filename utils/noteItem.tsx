@@ -1,3 +1,5 @@
+import { PrismaClient } from "@prisma/client";
+
 export type NoteItem = {
   title?: string;
   explanation?: string;
@@ -35,4 +37,12 @@ export function changedNoteItems(
     item.id === id ? changedItem(item, title, explanation, url) : item
   );
   return newNoteItems;
+}
+
+export async function isExitAtId(
+  id: string,
+  prisma: PrismaClient
+): Promise<boolean> {
+  const item = await prisma.noteItem.findFirst({ where: { id: id } });
+  return item !== null;
 }

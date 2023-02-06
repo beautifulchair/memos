@@ -5,25 +5,35 @@ export type NoteItem = {
   id: number;
 };
 
-export function changeTitleAtId(
-  noteItems: NoteItem[],
-  title: string,
-  id: number
-) {
-  let itemAtId = noteItems.find((item) => item.id === id);
-  if (itemAtId) itemAtId.title = title;
+export function changedItem(
+  item: NoteItem,
+  title?: string,
+  explanation?: string,
+  url?: string
+): NoteItem {
+  const newTitle = title !== undefined ? title : item.title;
+  const newExplanation =
+    explanation !== undefined ? explanation : item.explanation;
+  const newUrl = url !== undefined ? url : item.url;
+  const newItem: NoteItem = {
+    id: item.id,
+    title: newTitle,
+    explanation: newExplanation,
+    url: newUrl,
+  };
+  return newItem;
 }
 
-export function changeExplanationAtId(
+export function changedNoteItems(
   noteItems: NoteItem[],
-  explanation: string,
-  id: number
-) {
-  let itemAtId = noteItems.find((item) => item.id === id);
-  if (itemAtId) itemAtId.explanation = explanation;
-}
-
-export function changeURLAtId(noteItems: NoteItem[], url: string, id: number) {
-  let itemAtId = noteItems.find((item) => item.id === id);
-  if (itemAtId) itemAtId.url = url;
+  id: number,
+  title?: string,
+  explanation?: string,
+  url?: string
+): NoteItem[] {
+  const newNoteItems = noteItems.map((item) =>
+    item.id === id ? changedItem(item, title, explanation, url) : item
+  );
+  console.log(newNoteItems);
+  return newNoteItems;
 }

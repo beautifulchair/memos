@@ -2,12 +2,7 @@ import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import Link from "next/link";
-import {
-  NoteItem,
-  changeTitleAtId,
-  changeExplanationAtId,
-  changeURLAtId,
-} from "@/utils/noteItem";
+import { NoteItem, changedNoteItems } from "@/utils/noteItem";
 
 export default function Home() {
   // initial noteItems
@@ -41,8 +36,9 @@ export default function Home() {
 
       const id: number = item.id;
       const target = e.currentTarget;
-      changeTitleAtId(noteItems, target.value, id);
-      setNoteItems(noteItems);
+      setNoteItems(
+        changedNoteItems(noteItems, id, target.value, undefined, undefined)
+      );
       target.blur();
     }
   }
@@ -56,8 +52,9 @@ export default function Home() {
 
       const id: number = item.id;
       const target = e.currentTarget;
-      changeURLAtId(noteItems, target.value, id);
-      setNoteItems(noteItems);
+      setNoteItems(
+        changedNoteItems(noteItems, id, undefined, undefined, target.value)
+      );
       target.blur();
     }
   }
@@ -73,8 +70,9 @@ export default function Home() {
       e.preventDefault();
 
       const id: number = item.id;
-      changeExplanationAtId(noteItems, target.value, id);
-      setNoteItems(noteItems);
+      setNoteItems(
+        changedNoteItems(noteItems, id, undefined, target.value, undefined)
+      );
       target.blur();
     } else if (e.key === "Enter" && e.shiftKey) {
       const lineN = target.rows;

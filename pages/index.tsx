@@ -110,13 +110,12 @@ export default function Home({ dbNoteItems }: PageProps) {
 
   function saveNotes() {
     noteItems.map(async (item) => {
-      const response = await fetch("/api/noteItem/update", {
+      const response = await fetch("/api/noteItem/" + item.id + "/update", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: item.id,
           title: item.title,
           explanation: item.explanation,
           url: item.url,

@@ -2,11 +2,7 @@ import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import Link from "next/link";
-import {
-  NoteItem,
-  changeTitleAtId,
-  changeExplanationAtId,
-} from "@/utils/noteItem";
+import { NoteItem, changedNoteItems } from "@/utils/noteItem";
 
 export default function Home() {
   // initial noteItems
@@ -40,8 +36,25 @@ export default function Home() {
 
       const id: number = item.id;
       const target = e.currentTarget;
-      changeTitleAtId(noteItems, target.value, id);
-      setNoteItems(noteItems);
+      setNoteItems(
+        changedNoteItems(noteItems, id, target.value, undefined, undefined)
+      );
+      target.blur();
+    }
+  }
+  function keyDownOnURL(
+    e: React.KeyboardEvent<HTMLTextAreaElement>,
+    item: NoteItem
+  ) {
+    if (e.key === "Enter") {
+      // invalidiate new line
+      e.preventDefault();
+
+      const id: number = item.id;
+      const target = e.currentTarget;
+      setNoteItems(
+        changedNoteItems(noteItems, id, undefined, undefined, target.value)
+      );
       target.blur();
     }
   }
@@ -57,8 +70,9 @@ export default function Home() {
       e.preventDefault();
 
       const id: number = item.id;
-      changeExplanationAtId(noteItems, target.value, id);
-      setNoteItems(noteItems);
+      setNoteItems(
+        changedNoteItems(noteItems, id, undefined, target.value, undefined)
+      );
       target.blur();
     } else if (e.key === "Enter" && e.shiftKey) {
       const lineN = target.rows;
@@ -81,7 +95,7 @@ export default function Home() {
       {noteItems.map((item) => (
         <li key={item.id} className="mt-7 border-b-2 border-dashed pb-3">
           <div className="">
-            <div className="flex justify-between">
+            <div className="flex">
               <textarea
                 className="underline font-bold italic"
                 rows={1}
@@ -91,10 +105,18 @@ export default function Home() {
                 spellCheck="false"
               />
               {item.url && (
-                <Link href={item.url} className="text-sky-600 font-light">
-                  {item.url}
+                <Link href={item.url} className="text-gray-400 ml-3">
+                  url:
                 </Link>
               )}
+              <textarea
+                className="text-sky-600 font-light ml-2 w-full"
+                rows={1}
+                defaultValue={item.url}
+                onKeyDown={(e) => keyDownOnURL(e, item)}
+                autoCorrect="off"
+                spellCheck="false"
+              />
             </div>
             <textarea
               className="font-light block w-full"

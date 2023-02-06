@@ -2,18 +2,17 @@ import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import Link from "next/link";
-import { NoteItem, changedNoteItems, changedItem } from "@/utils/noteItem";
+import { NoteItem, changedNoteItems } from "@/utils/noteItem";
+import prisma from "@/lib/prisma";
+import { GetStaticProps } from "next";
 
-export default function Home() {
+type PageProps = {
+  dbNoteItems: NoteItem[];
+};
+
+export default function Home({ dbNoteItems }: PageProps) {
   // initial noteItems
-  const [noteItems, setNoteItems] = useState<NoteItem[]>([
-    {
-      title: "initial title",
-      explanation: "initial explanation",
-      url: "/",
-      id: 0,
-    },
-  ]);
+  const [noteItems, setNoteItems] = useState<NoteItem[]>(dbNoteItems);
 
   function addNote() {
     const newNoteItem: NoteItem = {
@@ -174,3 +173,8 @@ export default function Home() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const dbNoteItems = await prisma.noteItem.findMany();
+  return { props: { dbNoteItems } };
+};

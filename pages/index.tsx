@@ -15,14 +15,20 @@ export default function Home({ dbNoteItems }: PageProps) {
   const [noteItems, setNoteItems] = useState<NoteItem[]>(dbNoteItems);
 
   function addNote() {
-    const newNoteItem: NoteItem = {
-      title: "-",
-      explanation: "~",
-      url: "",
-      id: noteItems.length,
-    };
-    setNoteItems([...noteItems, newNoteItem]);
-    console.log(noteItems);
+    const lastItem: NoteItem | undefined = noteItems.at(-1);
+    if (
+      lastItem?.title !== "-" ||
+      lastItem?.explanation !== "~" ||
+      lastItem?.url !== ""
+    ) {
+      const newNoteItem: NoteItem = {
+        title: "-",
+        explanation: "~",
+        url: "",
+        id: noteItems.length,
+      };
+      setNoteItems([...noteItems, newNoteItem]);
+    }
   }
 
   function keyDownOnTitle(

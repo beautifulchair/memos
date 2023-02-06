@@ -22,3 +22,8 @@ export function changeExplanationAtId(
   let itemAtId = noteItems.find((item) => item.id === id);
   if (itemAtId) itemAtId.explanation = explanation;
 }
+
+export function changeURLAtId(noteItems: NoteItem[], url: string, id: number) {
+  let itemAtId = noteItems.find((item) => item.id === id);
+  if (itemAtId) itemAtId.url = url;
+}

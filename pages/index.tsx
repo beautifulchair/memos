@@ -108,6 +108,23 @@ export default function Home({ dbNoteItems }: PageProps) {
     }
   }
 
+  function saveNotes() {
+    noteItems.map(async (item) => {
+      const response = await fetch("/api/noteItem/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: item.id,
+          title: item.title,
+          explanation: item.explanation,
+          url: item.url,
+        }),
+      });
+    });
+  }
+
   const NoteTable = () => (
     <ol className="list-decimal mt-10">
       {noteItems.map((item) => (
@@ -167,6 +184,10 @@ export default function Home({ dbNoteItems }: PageProps) {
           <button
             onClick={(e) => addNote()}
             className="h-10 w-10 bg-sky-400 rounded-full ml-4"
+          ></button>
+          <button
+            onClick={(e) => saveNotes()}
+            className="h-10 w-10 bg-lime-500 rounded-full ml-4"
           ></button>
         </div>
       </MainLayout>

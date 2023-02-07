@@ -14,20 +14,22 @@ export default function Home({ dbNoteItems }: PageProps) {
   // initial noteItems
   const [noteItems, setNoteItems] = useState<NoteItem[]>(dbNoteItems);
 
-  function addNote() {
+  async function addNote() {
     const lastItem: NoteItem | undefined = noteItems.at(-1);
     if (
       lastItem?.title !== "-" ||
       lastItem?.explanation !== "~" ||
       lastItem?.url !== ""
     ) {
+      const id = noteItems.length;
       const newNoteItem: NoteItem = {
         title: "-",
         explanation: "~",
         url: "",
-        id: noteItems.length,
+        id: id,
       };
       setNoteItems([...noteItems, newNoteItem]);
+      const response = await fetch("/api/noteItem/" + id + "/add");
     }
   }
 

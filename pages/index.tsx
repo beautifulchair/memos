@@ -141,13 +141,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <MainLayout>
-        <div className="flex items-center justify-center">
+        <NoteTable />
+        <div className="flex items-center justify-center mt-4">
           <button
             onClick={(e) => addNote()}
             className="h-10 w-10 bg-sky-400 rounded-full ml-4"
           ></button>
         </div>
-        <NoteTable />
       </MainLayout>
     </>
   );

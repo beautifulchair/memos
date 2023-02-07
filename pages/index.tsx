@@ -97,7 +97,7 @@ export default function Home() {
           <div className="">
             <div className="flex">
               <textarea
-                className="underline font-bold italic"
+                className="underline font-bold italic p-0.5"
                 rows={1}
                 defaultValue={item.title}
                 onKeyDown={(e) => keyDownOnTitle(e, item)}
@@ -110,7 +110,7 @@ export default function Home() {
                 </Link>
               )}
               <textarea
-                className="text-sky-600 font-light ml-2 w-full"
+                className="text-sky-600 font-light ml-2 w-full p-0.5"
                 rows={1}
                 defaultValue={item.url}
                 onKeyDown={(e) => keyDownOnURL(e, item)}
@@ -119,7 +119,7 @@ export default function Home() {
               />
             </div>
             <textarea
-              className="font-light block w-full"
+              className="font-light block w-full p-0.5"
               rows={1}
               defaultValue={item.explanation}
               onKeyDown={(e) => keyDownOnExplanation(e, item)}
@@ -141,14 +141,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <MainLayout>
-        <div className="flex items-center justify-center">
-          <p>Hello</p>
+        <NoteTable />
+        <div className="flex items-center justify-center mt-4">
           <button
             onClick={(e) => addNote()}
             className="h-10 w-10 bg-sky-400 rounded-full ml-4"
           ></button>
         </div>
-        <NoteTable />
       </MainLayout>
     </>
   );

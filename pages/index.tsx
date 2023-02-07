@@ -40,12 +40,15 @@ export default function Home() {
     e: React.FocusEvent<HTMLTextAreaElement>,
     item: NoteItem
   ) {
-    const id = item.id;
-    const newTitle = e.currentTarget.value;
-    const newNoteItems: NoteItem[] = noteItems.map((itm) =>
-      itm.id === id ? changedItem(itm, newTitle, undefined, undefined) : itm
+    setNoteItems(
+      changedNoteItems(
+        noteItems,
+        item.id,
+        e.currentTarget.value,
+        undefined,
+        undefined
+      )
     );
-    setNoteItems(newNoteItems);
   }
   function keyDownOnURL(
     e: React.KeyboardEvent<HTMLTextAreaElement>,
@@ -58,12 +61,15 @@ export default function Home() {
     }
   }
   function blurOnUrl(e: React.FocusEvent<HTMLTextAreaElement>, item: NoteItem) {
-    const id = item.id;
-    const newUrl = e.currentTarget.value;
-    const newNoteItems: NoteItem[] = noteItems.map((itm) =>
-      itm.id === id ? changedItem(itm, undefined, undefined, newUrl) : itm
+    setNoteItems(
+      changedNoteItems(
+        noteItems,
+        item.id,
+        undefined,
+        undefined,
+        e.currentTarget.value
+      )
     );
-    setNoteItems(newNoteItems);
   }
   function keyDownOnExplanation(
     e: React.KeyboardEvent<HTMLTextAreaElement>,
@@ -83,14 +89,15 @@ export default function Home() {
     e: React.FocusEvent<HTMLTextAreaElement>,
     item: NoteItem
   ) {
-    const id = item.id;
-    const newExplanation = e.currentTarget.value;
-    const newNoteItems: NoteItem[] = noteItems.map((itm) =>
-      itm.id === id
-        ? changedItem(itm, undefined, newExplanation, undefined)
-        : itm
+    setNoteItems(
+      changedNoteItems(
+        noteItems,
+        item.id,
+        undefined,
+        e.currentTarget.value,
+        undefined
+      )
     );
-    setNoteItems(newNoteItems);
   }
   function keyDownCaputureOnExplanation(
     e: React.KeyboardEvent<HTMLTextAreaElement>

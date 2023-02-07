@@ -35,7 +35,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     e: React.KeyboardEvent<HTMLTextAreaElement>,
     item: NoteItem
   ) {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.nativeEvent.isComposing) {
       // invalidiate new line
       e.preventDefault();
       e.currentTarget.blur();
@@ -59,7 +59,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     e: React.KeyboardEvent<HTMLTextAreaElement>,
     item: NoteItem
   ) {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.nativeEvent.isComposing) {
       // invalidiate new line
       e.preventDefault();
       e.currentTarget.blur();
@@ -82,11 +82,11 @@ export default function Home({ dbNoteItems }: PageProps) {
   ) {
     const target: HTMLTextAreaElement = e.currentTarget;
 
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
       // invalidiate new line
       e.preventDefault();
       e.currentTarget.blur();
-    } else if (e.key === "Enter" && e.shiftKey) {
+    } else if (e.key === "Enter" && e.shiftKey && !e.nativeEvent.isComposing) {
       target.rows += 1;
     }
   }

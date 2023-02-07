@@ -34,6 +34,5 @@ export function changedNoteItems(
   const newNoteItems = noteItems.map((item) =>
     item.id === id ? changedItem(item, title, explanation, url) : item
   );
-  console.log(newNoteItems);
   return newNoteItems;
 }

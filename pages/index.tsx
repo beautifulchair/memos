@@ -2,7 +2,7 @@ import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import Link from "next/link";
-import { NoteItem, changedNoteItems } from "@/utils/noteItem";
+import { NoteItem, changedNoteItems, changedItem } from "@/utils/noteItem";
 
 export default function Home() {
   // initial noteItems
@@ -33,14 +33,22 @@ export default function Home() {
     if (e.key === "Enter") {
       // invalidiate new line
       e.preventDefault();
-
-      const id: number = item.id;
-      const target = e.currentTarget;
-      setNoteItems(
-        changedNoteItems(noteItems, id, target.value, undefined, undefined)
-      );
-      target.blur();
+      e.currentTarget.blur();
     }
+  }
+  function blurOnTitle(
+    e: React.FocusEvent<HTMLTextAreaElement>,
+    item: NoteItem
+  ) {
+    setNoteItems(
+      changedNoteItems(
+        noteItems,
+        item.id,
+        e.currentTarget.value,
+        undefined,
+        undefined
+      )
+    );
   }
   function keyDownOnURL(
     e: React.KeyboardEvent<HTMLTextAreaElement>,
@@ -49,16 +57,20 @@ export default function Home() {
     if (e.key === "Enter") {
       // invalidiate new line
       e.preventDefault();
-
-      const id: number = item.id;
-      const target = e.currentTarget;
-      setNoteItems(
-        changedNoteItems(noteItems, id, undefined, undefined, target.value)
-      );
-      target.blur();
+      e.currentTarget.blur();
     }
   }
-
+  function blurOnUrl(e: React.FocusEvent<HTMLTextAreaElement>, item: NoteItem) {
+    setNoteItems(
+      changedNoteItems(
+        noteItems,
+        item.id,
+        undefined,
+        undefined,
+        e.currentTarget.value
+      )
+    );
+  }
   function keyDownOnExplanation(
     e: React.KeyboardEvent<HTMLTextAreaElement>,
     item: NoteItem
@@ -68,18 +80,25 @@ export default function Home() {
     if (e.key === "Enter" && !e.shiftKey) {
       // invalidiate new line
       e.preventDefault();
-
-      const id: number = item.id;
-      setNoteItems(
-        changedNoteItems(noteItems, id, undefined, target.value, undefined)
-      );
-      target.blur();
+      e.currentTarget.blur();
     } else if (e.key === "Enter" && e.shiftKey) {
-      const lineN = target.rows;
       target.rows += 1;
     }
   }
-
+  function blurOnExplanation(
+    e: React.FocusEvent<HTMLTextAreaElement>,
+    item: NoteItem
+  ) {
+    setNoteItems(
+      changedNoteItems(
+        noteItems,
+        item.id,
+        undefined,
+        e.currentTarget.value,
+        undefined
+      )
+    );
+  }
   function keyDownCaputureOnExplanation(
     e: React.KeyboardEvent<HTMLTextAreaElement>
   ) {
@@ -101,6 +120,7 @@ export default function Home() {
                 rows={1}
                 defaultValue={item.title}
                 onKeyDown={(e) => keyDownOnTitle(e, item)}
+                onBlur={(e) => blurOnTitle(e, item)}
                 autoCorrect="off"
                 spellCheck="false"
               />
@@ -114,6 +134,7 @@ export default function Home() {
                 rows={1}
                 defaultValue={item.url}
                 onKeyDown={(e) => keyDownOnURL(e, item)}
+                onBlur={(e) => blurOnUrl(e, item)}
                 autoCorrect="off"
                 spellCheck="false"
               />
@@ -124,6 +145,7 @@ export default function Home() {
               defaultValue={item.explanation}
               onKeyDown={(e) => keyDownOnExplanation(e, item)}
               onKeyDownCapture={(e) => keyDownCaputureOnExplanation(e)}
+              onBlur={(e) => blurOnExplanation(e, item)}
               autoCorrect="off"
               spellCheck="false"
             />

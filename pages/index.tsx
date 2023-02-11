@@ -2,35 +2,42 @@ import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import Link from "next/link";
-import { NoteItem, changedNoteItems, changedItem } from "@/utils/noteItem";
+import { NoteItem, changedNoteItems } from "@/utils/noteItem";
+import prisma from "@/lib/prisma";
+import { GetStaticProps } from "next";
 
-export default function Home() {
+type PageProps = {
+  dbNoteItems: NoteItem[];
+};
+
+export default function Home({ dbNoteItems }: PageProps) {
   // initial noteItems
-  const [noteItems, setNoteItems] = useState<NoteItem[]>([
-    {
-      title: "initial title",
-      explanation: "initial explanation",
-      url: "/",
-      id: 0,
-    },
-  ]);
+  const [noteItems, setNoteItems] = useState<NoteItem[]>(dbNoteItems);
 
-  function addNote() {
-    const newNoteItem: NoteItem = {
-      title: "-",
-      explanation: "~",
-      url: "",
-      id: noteItems.length,
-    };
-    setNoteItems([...noteItems, newNoteItem]);
-    console.log(noteItems);
+  async function addNote() {
+    const lastItem: NoteItem | undefined = noteItems.at(-1);
+    if (
+      lastItem?.title !== "-" ||
+      lastItem?.explanation !== "~" ||
+      lastItem?.url !== ""
+    ) {
+      const id = noteItems.length;
+      const newNoteItem: NoteItem = {
+        title: "-",
+        explanation: "~",
+        url: "",
+        id: id,
+      };
+      setNoteItems([...noteItems, newNoteItem]);
+      const response = await fetch("/api/noteItem/" + id + "/add");
+    }
   }
 
   function keyDownOnTitle(
     e: React.KeyboardEvent<HTMLTextAreaElement>,
     item: NoteItem
   ) {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.nativeEvent.isComposing) {
       // invalidiate new line
       e.preventDefault();
       e.currentTarget.blur();
@@ -54,7 +61,7 @@ export default function Home() {
     e: React.KeyboardEvent<HTMLTextAreaElement>,
     item: NoteItem
   ) {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.nativeEvent.isComposing) {
       // invalidiate new line
       e.preventDefault();
       e.currentTarget.blur();
@@ -77,11 +84,11 @@ export default function Home() {
   ) {
     const target: HTMLTextAreaElement = e.currentTarget;
 
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
       // invalidiate new line
       e.preventDefault();
       e.currentTarget.blur();
-    } else if (e.key === "Enter" && e.shiftKey) {
+    } else if (e.key === "Enter" && e.shiftKey && !e.nativeEvent.isComposing) {
       target.rows += 1;
     }
   }
@@ -107,6 +114,22 @@ export default function Home() {
     if (e.key === "Backspace" && lastChar?.charCodeAt(0) === 10) {
       target.rows -= 1;
     }
+  }
+
+  function saveNotes() {
+    noteItems.map(async (item) => {
+      const response = await fetch("/api/noteItem/" + item.id + "/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: item.title,
+          explanation: item.explanation,
+          url: item.url,
+        }),
+      });
+    });
   }
 
   const NoteTable = () => (
@@ -169,8 +192,17 @@ export default function Home() {
             onClick={(e) => addNote()}
             className="h-10 w-10 bg-sky-400 rounded-full ml-4"
           ></button>
+          <button
+            onClick={(e) => saveNotes()}
+            className="h-10 w-10 bg-lime-500 rounded-full ml-4"
+          ></button>
         </div>
       </MainLayout>
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const dbNoteItems = await prisma.noteItem.findMany();
+  return { props: { dbNoteItems } };
+};

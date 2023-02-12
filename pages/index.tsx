@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { NoteItem, changedNoteItems } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 
 type PageProps = {
   dbNoteItems: NoteItem[];
@@ -202,7 +202,7 @@ export default function Home({ dbNoteItems }: PageProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const dbNoteItems = await prisma.noteItem.findMany();
   return { props: { dbNoteItems } };
 };

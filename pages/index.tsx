@@ -2,9 +2,16 @@ import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import Link from "next/link";
-import { NoteItem, changedNoteItems } from "@/utils/noteItem";
+import { NoteItem, changedNoteItems, equalItem } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
+
+const initializedItem = (id: number): NoteItem => ({
+  title: "-",
+  explanation: "~",
+  url: "",
+  id: id,
+});
 
 type PageProps = {
   dbNoteItems: NoteItem[];
@@ -16,19 +23,9 @@ export default function Home({ dbNoteItems }: PageProps) {
 
   async function addNote() {
     const lastItem: NoteItem | undefined = noteItems.at(-1);
-    if (
-      lastItem?.title !== "-" ||
-      lastItem?.explanation !== "~" ||
-      lastItem?.url !== ""
-    ) {
+    if (equalItem(lastItem, initializedItem(-1))) {
       const id = noteItems.length;
-      const newNoteItem: NoteItem = {
-        title: "-",
-        explanation: "~",
-        url: "",
-        id: id,
-      };
-      setNoteItems([...noteItems, newNoteItem]);
+      setNoteItems([...noteItems, initializedItem(id)]);
       const response = await fetch("/api/noteItem/" + id + "/add");
     }
   }

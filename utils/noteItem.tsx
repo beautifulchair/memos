@@ -7,6 +7,16 @@ export type NoteItem = {
   id: number;
 };
 
+export function equalItem(
+  item1: NoteItem | undefined,
+  item2: NoteItem | undefined
+): boolean {
+  const isTitle: boolean = item1?.title == item2?.title;
+  const isExplanation: boolean = item1?.explanation == item2?.explanation;
+  const isUrl: boolean = item1?.url == item2?.url;
+  return isTitle && isExplanation && isUrl;
+}
+
 export function changedItem(
   item: NoteItem,
   title?: string,

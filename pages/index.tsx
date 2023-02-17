@@ -120,47 +120,51 @@ export default function Home({ dbNoteItems }: PageProps) {
     });
   }
 
+  const NoteItem = ({ item }: { item: NoteItem }) => (
+    <div className="">
+      <div className="flex">
+        <textarea
+          className="underline font-bold italic p-0.5"
+          rows={1}
+          defaultValue={item.title}
+          onKeyDown={(e) => keyDownOnTitle(e)}
+          onBlur={(e) => blurOnTitle(e, item)}
+          autoCorrect="off"
+          spellCheck="false"
+        />
+        {item.url && (
+          <Link href={item.url} className="text-gray-400 ml-3">
+            url:
+          </Link>
+        )}
+        <textarea
+          className="text-sky-600 font-light ml-2 w-full p-0.5"
+          rows={1}
+          defaultValue={item.url}
+          onKeyDown={(e) => keyDownOnURL(e)}
+          onBlur={(e) => blurOnUrl(e, item)}
+          autoCorrect="off"
+          spellCheck="false"
+        />
+      </div>
+      <textarea
+        className="font-light block w-full p-0.5"
+        rows={1}
+        defaultValue={item.explanation}
+        onKeyDown={(e) => keyDownOnExplanation(e)}
+        onKeyDownCapture={(e) => keyDownCaputureOnExplanation(e)}
+        onBlur={(e) => blurOnExplanation(e, item)}
+        autoCorrect="off"
+        spellCheck="false"
+      />
+    </div>
+  );
+
   const NoteTable = () => (
     <ol className="list-decimal mt-10">
       {noteItems.map((item) => (
         <li key={item.id} className="mt-7 border-b-2 border-dashed pb-3">
-          <div className="">
-            <div className="flex">
-              <textarea
-                className="underline font-bold italic p-0.5"
-                rows={1}
-                defaultValue={item.title}
-                onKeyDown={(e) => keyDownOnTitle(e)}
-                onBlur={(e) => blurOnTitle(e, item)}
-                autoCorrect="off"
-                spellCheck="false"
-              />
-              {item.url && (
-                <Link href={item.url} className="text-gray-400 ml-3">
-                  url:
-                </Link>
-              )}
-              <textarea
-                className="text-sky-600 font-light ml-2 w-full p-0.5"
-                rows={1}
-                defaultValue={item.url}
-                onKeyDown={(e) => keyDownOnURL(e)}
-                onBlur={(e) => blurOnUrl(e, item)}
-                autoCorrect="off"
-                spellCheck="false"
-              />
-            </div>
-            <textarea
-              className="font-light block w-full p-0.5"
-              rows={1}
-              defaultValue={item.explanation}
-              onKeyDown={(e) => keyDownOnExplanation(e)}
-              onKeyDownCapture={(e) => keyDownCaputureOnExplanation(e)}
-              onBlur={(e) => blurOnExplanation(e, item)}
-              autoCorrect="off"
-              spellCheck="false"
-            />
-          </div>
+          <NoteItem item={item} />
         </li>
       ))}
     </ol>

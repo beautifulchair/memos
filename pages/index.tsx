@@ -160,9 +160,9 @@ export default function Home({ dbNoteItems }: PageProps) {
     </div>
   );
 
-  const NoteTable = () => (
+  const NoteTable = ({ nis }: { nis: NoteItem[] }) => (
     <ol className="list-decimal mt-10">
-      {noteItems.map((item) => (
+      {nis.map((item) => (
         <li key={item.id} className="mt-7 border-b-2 border-dashed pb-3">
           <NoteItem item={item} />
         </li>
@@ -178,7 +178,7 @@ export default function Home({ dbNoteItems }: PageProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <MainLayout>
-        <NoteTable />
+        <NoteTable nis={noteItems} />
         <div className="flex items-center justify-center mt-4">
           <button
             onClick={(e) => addNote()}

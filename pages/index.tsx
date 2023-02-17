@@ -30,10 +30,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     }
   }
 
-  function keyDownOnTitle(
-    e: React.KeyboardEvent<HTMLTextAreaElement>,
-    item: NoteItem
-  ) {
+  function keyDownOnTitle(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter" && !e.nativeEvent.isComposing) {
       // invalidiate new line
       e.preventDefault();
@@ -54,10 +51,7 @@ export default function Home({ dbNoteItems }: PageProps) {
       )
     );
   }
-  function keyDownOnURL(
-    e: React.KeyboardEvent<HTMLTextAreaElement>,
-    item: NoteItem
-  ) {
+  function keyDownOnURL(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter" && !e.nativeEvent.isComposing) {
       // invalidiate new line
       e.preventDefault();
@@ -75,10 +69,7 @@ export default function Home({ dbNoteItems }: PageProps) {
       )
     );
   }
-  function keyDownOnExplanation(
-    e: React.KeyboardEvent<HTMLTextAreaElement>,
-    item: NoteItem
-  ) {
+  function keyDownOnExplanation(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     const target: HTMLTextAreaElement = e.currentTarget;
 
     if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
@@ -139,7 +130,7 @@ export default function Home({ dbNoteItems }: PageProps) {
                 className="underline font-bold italic p-0.5"
                 rows={1}
                 defaultValue={item.title}
-                onKeyDown={(e) => keyDownOnTitle(e, item)}
+                onKeyDown={(e) => keyDownOnTitle(e)}
                 onBlur={(e) => blurOnTitle(e, item)}
                 autoCorrect="off"
                 spellCheck="false"
@@ -153,7 +144,7 @@ export default function Home({ dbNoteItems }: PageProps) {
                 className="text-sky-600 font-light ml-2 w-full p-0.5"
                 rows={1}
                 defaultValue={item.url}
-                onKeyDown={(e) => keyDownOnURL(e, item)}
+                onKeyDown={(e) => keyDownOnURL(e)}
                 onBlur={(e) => blurOnUrl(e, item)}
                 autoCorrect="off"
                 spellCheck="false"
@@ -163,7 +154,7 @@ export default function Home({ dbNoteItems }: PageProps) {
               className="font-light block w-full p-0.5"
               rows={1}
               defaultValue={item.explanation}
-              onKeyDown={(e) => keyDownOnExplanation(e, item)}
+              onKeyDown={(e) => keyDownOnExplanation(e)}
               onKeyDownCapture={(e) => keyDownCaputureOnExplanation(e)}
               onBlur={(e) => blurOnExplanation(e, item)}
               autoCorrect="off"

@@ -17,34 +17,36 @@ export function equalItem(
   return isTitle && isExplanation && isUrl;
 }
 
-export function changedItem(
+export function changedTitle(
   item: NoteItem,
-  title?: string,
-  explanation?: string,
-  url?: string
+  title: string | undefined
 ): NoteItem {
-  const newTitle = title !== undefined ? title : item.title;
-  const newExplanation =
-    explanation !== undefined ? explanation : item.explanation;
-  const newUrl = url !== undefined ? url : item.url;
-  const newItem: NoteItem = {
-    id: item.id,
-    title: newTitle,
-    explanation: newExplanation,
-    url: newUrl,
-  };
+  const newItem = item;
+  newItem.title = title;
   return newItem;
+}
+
+export function changedExplanation(
+  item: NoteItem,
+  explanation: string | undefined
+): NoteItem {
+  const newTitle = item;
+  newTitle.explanation = explanation;
+  return newTitle;
+}
+
+export function changedUrl(item: NoteItem, url: string | undefined): NoteItem {
+  const newTitle = item;
+  newTitle.url = url;
+  return newTitle;
 }
 
 export function changedNoteItems(
   noteItems: NoteItem[],
-  id: number,
-  title?: string,
-  explanation?: string,
-  url?: string
+  newItem: NoteItem
 ): NoteItem[] {
-  const newNoteItems = noteItems.map((item) =>
-    item.id === id ? changedItem(item, title, explanation, url) : item
+  const newNoteItems = noteItems.map((itm) =>
+    itm.id == newItem.id ? newItem : itm
   );
   return newNoteItems;
 }

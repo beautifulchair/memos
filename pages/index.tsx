@@ -31,7 +31,7 @@ export default function Home({ dbNoteItems }: PageProps) {
 
   async function addNote() {
     const lastItem: NoteItem | undefined = noteItems.at(-1);
-    if (equalItem(lastItem, initializedItem(-1))) {
+    if (!equalItem(lastItem, initializedItem(-1))) {
       const id = noteItems.length;
       setNoteItems([...noteItems, initializedItem(id)]);
       const response = await fetch("/api/noteItem/" + id + "/add");

@@ -56,5 +56,5 @@ export async function isExitAtId(
   prisma: PrismaClient
 ): Promise<boolean> {
   const item = await prisma.noteItem.findFirst({ where: { id: id } });
-  return item !== null;
+  return item != null;
 }

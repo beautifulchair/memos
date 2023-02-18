@@ -38,7 +38,7 @@ export default function Home({ dbNoteItems }: PageProps) {
   }
 
   function keyDownOnTitle(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+    if (e.key == "Enter" && !e.nativeEvent.isComposing) {
       // invalidiate new line
       e.preventDefault();
       e.currentTarget.blur();
@@ -52,7 +52,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     setNoteItems(changedNoteItems(noteItems, changedTitle(item, target.value)));
   }
   function keyDownOnURL(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+    if (e.key == "Enter" && !e.nativeEvent.isComposing) {
       // invalidiate new line
       e.preventDefault();
       e.currentTarget.blur();
@@ -65,11 +65,11 @@ export default function Home({ dbNoteItems }: PageProps) {
   function keyDownOnExplanation(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     const target: HTMLTextAreaElement = e.currentTarget;
 
-    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+    if (e.key == "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
       // invalidiate new line
       e.preventDefault();
       e.currentTarget.blur();
-    } else if (e.key === "Enter" && e.shiftKey && !e.nativeEvent.isComposing) {
+    } else if (e.key == "Enter" && e.shiftKey && !e.nativeEvent.isComposing) {
       target.rows += 1;
     }
   }
@@ -87,7 +87,7 @@ export default function Home({ dbNoteItems }: PageProps) {
   ) {
     const target: HTMLTextAreaElement = e.currentTarget;
     const lastChar = target.value.at(-1);
-    if (e.key === "Backspace" && lastChar?.charCodeAt(0) === 10) {
+    if (e.key == "Backspace" && lastChar?.charCodeAt(0) == 10) {
       target.rows -= 1;
     }
   }

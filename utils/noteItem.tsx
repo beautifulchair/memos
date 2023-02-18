@@ -59,7 +59,7 @@ export async function isExitAtId(
   return item != null;
 }
 
-export function saveItem(item: NoteItem) {
+export function saveItemDB(item: NoteItem) {
   fetch("/api/noteItem/" + item.id + "/update", {
     method: "POST",
     headers: {

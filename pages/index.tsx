@@ -9,7 +9,7 @@ import {
   changedTitle,
   changedUrl,
   changedExplanation,
-  saveItem,
+  saveItemDB,
 } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
@@ -52,7 +52,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     const target: HTMLTextAreaElement = e.currentTarget;
     const newItem = changedTitle(item, target.value);
     setNoteItems(changedNoteItems(noteItems, newItem));
-    saveItem(newItem);
+    saveItemDB(newItem);
   }
   function keyDownOnURL(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key == "Enter" && !e.nativeEvent.isComposing) {
@@ -65,7 +65,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     const target: HTMLTextAreaElement = e.currentTarget;
     const newItem = changedUrl(item, target.value);
     setNoteItems(changedNoteItems(noteItems, newItem));
-    saveItem(newItem);
+    saveItemDB(newItem);
   }
   function keyDownOnExplanation(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     const target: HTMLTextAreaElement = e.currentTarget;
@@ -85,7 +85,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     const target: HTMLTextAreaElement = e.currentTarget;
     const newItem = changedExplanation(item, target.value);
     setNoteItems(changedNoteItems(noteItems, newItem));
-    saveItem(newItem);
+    saveItemDB(newItem);
   }
   function keyDownCaputureOnExplanation(
     e: React.KeyboardEvent<HTMLTextAreaElement>

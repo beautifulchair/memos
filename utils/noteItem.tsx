@@ -58,3 +58,23 @@ export async function isExitAtId(
   const item = await prisma.noteItem.findFirst({ where: { id: id } });
   return item != null;
 }
+
+export function saveItem(item: NoteItem) {
+  fetch("/api/noteItem/" + item.id + "/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: item.title,
+      explanation: item.explanation,
+      url: item.url,
+    }),
+  })
+    .then((v) => {
+      return v;
+    })
+    .catch(() => {
+      console.log(Function.name + "error");
+    });
+}

@@ -11,6 +11,8 @@ import {
   changedExplanation,
   saveItemDB,
   addItemDB,
+  changedPublished,
+  changePublishedDB,
 } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
@@ -99,6 +101,12 @@ export default function Home({ dbNoteItems }: PageProps) {
     }
   }
 
+  function hiddenItem(item: NoteItem) {
+    const newItem = changedPublished(item, false);
+    setNoteItems(changedNoteItems(noteItems, newItem));
+    changePublishedDB(newItem);
+  }
+
   const NoteItem = ({ item }: { item: NoteItem }) => (
     <div className="">
       <div className="flex">
@@ -146,7 +154,13 @@ export default function Home({ dbNoteItems }: PageProps) {
         .sort((i1, i2) => i1.id - i2.id)
         .map((item) => (
           <li key={item.id} className="mt-7 border-b-2 border-dashed pb-3">
-            <NoteItem item={item} />
+            <div className="flex">
+              <button
+                className="rounded-full w-4 h-4 bg-red-600 border"
+                onClick={() => hiddenItem(item)}
+              />
+              <NoteItem item={item} />
+            </div>
           </li>
         ))}
     </ol>

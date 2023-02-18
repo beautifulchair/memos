@@ -14,5 +14,6 @@ model NoteItem {
   title String
   explanation String
   url String
+  published Boolean @default(true)
   id String @unique
 }

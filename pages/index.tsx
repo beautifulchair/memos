@@ -2,7 +2,14 @@ import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import Link from "next/link";
-import { NoteItem, changedNoteItems, equalItem } from "@/utils/noteItem";
+import {
+  NoteItem,
+  changedNoteItems,
+  equalItem,
+  changedTitle,
+  changedUrl,
+  changedExplanation,
+} from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
 
@@ -41,15 +48,8 @@ export default function Home({ dbNoteItems }: PageProps) {
     e: React.FocusEvent<HTMLTextAreaElement>,
     item: NoteItem
   ) {
-    setNoteItems(
-      changedNoteItems(
-        noteItems,
-        item.id,
-        e.currentTarget.value,
-        undefined,
-        undefined
-      )
-    );
+    const target: HTMLTextAreaElement = e.currentTarget;
+    setNoteItems(changedNoteItems(noteItems, changedTitle(item, target.value)));
   }
   function keyDownOnURL(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter" && !e.nativeEvent.isComposing) {
@@ -59,15 +59,8 @@ export default function Home({ dbNoteItems }: PageProps) {
     }
   }
   function blurOnUrl(e: React.FocusEvent<HTMLTextAreaElement>, item: NoteItem) {
-    setNoteItems(
-      changedNoteItems(
-        noteItems,
-        item.id,
-        undefined,
-        undefined,
-        e.currentTarget.value
-      )
-    );
+    const target: HTMLTextAreaElement = e.currentTarget;
+    setNoteItems(changedNoteItems(noteItems, changedUrl(item, target.value)));
   }
   function keyDownOnExplanation(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     const target: HTMLTextAreaElement = e.currentTarget;
@@ -84,14 +77,9 @@ export default function Home({ dbNoteItems }: PageProps) {
     e: React.FocusEvent<HTMLTextAreaElement>,
     item: NoteItem
   ) {
+    const target: HTMLTextAreaElement = e.currentTarget;
     setNoteItems(
-      changedNoteItems(
-        noteItems,
-        item.id,
-        undefined,
-        e.currentTarget.value,
-        undefined
-      )
+      changedNoteItems(noteItems, changedExplanation(item, target.value))
     );
   }
   function keyDownCaputureOnExplanation(

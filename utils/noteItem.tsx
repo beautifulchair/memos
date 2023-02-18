@@ -78,3 +78,11 @@ export function saveItemDB(item: NoteItem) {
       console.log(Function.name + "error");
     });
 }
+
+export function addItemDB(id: number) {
+  fetch("/api/noteItem/" + id + "/add")
+    .then()
+    .catch(() => {
+      console.log(Function.name + "error");
+    });
+}

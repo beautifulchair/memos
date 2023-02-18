@@ -10,6 +10,7 @@ import {
   changedUrl,
   changedExplanation,
   saveItemDB,
+  addItemDB,
 } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
@@ -34,7 +35,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     if (!equalItem(lastItem, initializedItem(-1))) {
       const id = noteItems.length;
       setNoteItems([...noteItems, initializedItem(id)]);
-      const response = await fetch("/api/noteItem/" + id + "/add");
+      addItemDB(id);
     }
   }
 

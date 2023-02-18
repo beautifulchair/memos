@@ -87,3 +87,21 @@ export function addItemDB(id: number) {
       console.log(Function.name + "error");
     });
 }
+
+export function changePublishedDB(item: NoteItem) {
+  fetch("/api/noteItem/" + item.id + "/update_published", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      published: item.published,
+    }),
+  })
+    .then((v) => {
+      return v;
+    })
+    .catch(() => {
+      console.log(Function.name + "error");
+    });
+}

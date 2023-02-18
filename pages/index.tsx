@@ -154,7 +154,6 @@ export default function Home({ dbNoteItems }: PageProps) {
         .sort((i1, i2) => i1.id - i2.id)
         .map((item) => (
           <li key={item.id} className="mt-7 border-b-2 border-dashed pb-3">
-            <div className="text-4xl">{item.id}</div>
             <NoteItem item={item} />
           </li>
         ))}

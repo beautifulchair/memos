@@ -7,42 +7,82 @@ export type NoteItem = {
   id: number;
 };
 
-export function changedItem(
+export function equalItem(
+  item1: NoteItem | undefined,
+  item2: NoteItem | undefined
+): boolean {
+  const isTitle: boolean = item1?.title == item2?.title;
+  const isExplanation: boolean = item1?.explanation == item2?.explanation;
+  const isUrl: boolean = item1?.url == item2?.url;
+  return isTitle && isExplanation && isUrl;
+}
+
+export function changedTitle(
   item: NoteItem,
-  title?: string,
-  explanation?: string,
-  url?: string
+  title: string | undefined
 ): NoteItem {
-  const newTitle = title !== undefined ? title : item.title;
-  const newExplanation =
-    explanation !== undefined ? explanation : item.explanation;
-  const newUrl = url !== undefined ? url : item.url;
-  const newItem: NoteItem = {
-    id: item.id,
-    title: newTitle,
-    explanation: newExplanation,
-    url: newUrl,
-  };
+  const newItem = item;
+  newItem.title = title;
   return newItem;
+}
+
+export function changedExplanation(
+  item: NoteItem,
+  explanation: string | undefined
+): NoteItem {
+  const newTitle = item;
+  newTitle.explanation = explanation;
+  return newTitle;
+}
+
+export function changedUrl(item: NoteItem, url: string | undefined): NoteItem {
+  const newTitle = item;
+  newTitle.url = url;
+  return newTitle;
 }
 
 export function changedNoteItems(
   noteItems: NoteItem[],
-  id: number,
-  title?: string,
-  explanation?: string,
-  url?: string
+  newItem: NoteItem
 ): NoteItem[] {
-  const newNoteItems = noteItems.map((item) =>
-    item.id === id ? changedItem(item, title, explanation, url) : item
+  const newNoteItems = noteItems.map((itm) =>
+    itm.id == newItem.id ? newItem : itm
   );
   return newNoteItems;
 }
 
-export async function isExitAtId(
+export async function isExistAtId(
   id: string,
   prisma: PrismaClient
 ): Promise<boolean> {
   const item = await prisma.noteItem.findFirst({ where: { id: id } });
-  return item !== null;
+  return item != null;
+}
+
+export function saveItemDB(item: NoteItem) {
+  fetch("/api/noteItem/" + item.id + "/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: item.title,
+      explanation: item.explanation,
+      url: item.url,
+    }),
+  })
+    .then((v) => {
+      return v;
+    })
+    .catch(() => {
+      console.log(Function.name + "error");
+    });
+}
+
+export function addItemDB(id: number) {
+  fetch("/api/noteItem/" + id + "/add")
+    .then()
+    .catch(() => {
+      console.log(Function.name + "error");
+    });
 }

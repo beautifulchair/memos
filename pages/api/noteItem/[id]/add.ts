@@ -16,7 +16,6 @@ export default async function handle(
         title: "-",
         explanation: "~",
         url: "",
-        published: true,
       },
     });
     res.status(200).json(post);

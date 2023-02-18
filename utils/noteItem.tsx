@@ -51,7 +51,7 @@ export function changedNoteItems(
   return newNoteItems;
 }
 
-export async function isExitAtId(
+export async function isExistAtId(
   id: string,
   prisma: PrismaClient
 ): Promise<boolean> {

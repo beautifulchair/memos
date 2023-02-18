@@ -42,6 +42,12 @@ export function changedUrl(item: NoteItem, url: string | undefined): NoteItem {
   return newTitle;
 }
 
+export function changedPublished(item: NoteItem, published: boolean): NoteItem {
+  const newTitle = item;
+  newTitle.published = published;
+  return newTitle;
+}
+
 export function changedNoteItems(
   noteItems: NoteItem[],
   newItem: NoteItem

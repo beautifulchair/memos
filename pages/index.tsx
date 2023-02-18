@@ -20,6 +20,7 @@ const initializedItem = (id: number): NoteItem => ({
   explanation: "~",
   url: "",
   id: id,
+  published: true,
 });
 
 type PageProps = {

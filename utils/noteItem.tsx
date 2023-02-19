@@ -24,9 +24,3 @@ export function editItem(item: NoteItem, change: EditableProps): NoteItem {
   }
   return item;
 }
-
-export function changedPublished(item: NoteItem, published: boolean): NoteItem {
-  const newTitle = item;
-  newTitle.published = published;
-  return newTitle;
-}

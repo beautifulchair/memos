@@ -1,12 +1,7 @@
 import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
-import {
-  NoteItem,
-  equalItemAtEditable,
-  editItem,
-  changedPublished,
-} from "@/utils/noteItem";
+import { NoteItem, equalItemAtEditable, editItem } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
 import NewTabLink from "@/components/NewTabLink";
@@ -101,9 +96,9 @@ export default function Home({ dbNoteItems }: PageProps) {
   }
 
   function hiddenItem(item: NoteItem) {
-    const newItem = changedPublished(item, false);
-    setNoteItems(changedNoteItems(noteItems, newItem));
-    changePublishedDB(newItem);
+    // const newItem = changedPublished(item, false);
+    // setNoteItems(changedNoteItems(noteItems, newItem));
+    // changePublishedDB(newItem);
   }
 
   const NoteItem = ({ item }: { item: NoteItem }) => (

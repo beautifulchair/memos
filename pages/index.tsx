@@ -1,7 +1,6 @@
 import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
-import Link from "next/link";
 import {
   NoteItem,
   changedNoteItems,
@@ -16,6 +15,7 @@ import {
 } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
+import NewTabLink from "@/components/NewTabLink";
 
 const initializedItem = (id: number): NoteItem => ({
   title: "-",
@@ -120,9 +120,9 @@ export default function Home({ dbNoteItems }: PageProps) {
           spellCheck="false"
         />
         {item.url && (
-          <Link href={item.url} className="text-gray-400 ml-3">
+          <NewTabLink href={item.url} className="text-gray-400 ml-3">
             url:
-          </Link>
+          </NewTabLink>
         )}
         <textarea
           className="text-sky-600 font-light ml-2 w-full p-0.5"

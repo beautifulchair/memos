@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "dev:local": "env-cmd -f .env.local next",
-    "dev:stg": "env-cmd -f .env.staging next"
+    "dev:stg": "env-cmd -f .env.staging next",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@next/font": "13.1.4",

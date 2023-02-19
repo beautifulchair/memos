@@ -17,7 +17,10 @@ export function equalItemAtEditable(item1: NoteItem, item2: NoteItem): boolean {
   return true;
 }
 
-export function editItem(item: NoteItem, change: EditableProps): NoteItem {
+export function editItem(
+  item: NoteItem,
+  change: Partial<EditableProps>
+): NoteItem {
   type key = keyof EditableProps;
   for (const prop in change) {
     item[prop as key] = change[prop as key];

@@ -12,7 +12,7 @@ export async function isExistAtId(
   return item != null;
 }
 
-export function saveEditDB(id: number, change: EditableProps) {
+export function saveEditDB(id: number, change: Partial<EditableProps>) {
   fetch("/api/noteItem/" + id + "/update", {
     method: "POST",
     headers: {

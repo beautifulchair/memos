@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { NoteItem } from "@/utils/noteItem";
+import { NoteItem } from "@/utils/noteGroup";
 
 const editableprops = ["title", "explanation", "url"] as const;
 type EditableProps = Pick<NoteItem, typeof editableprops[number]>;

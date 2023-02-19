@@ -1,12 +1,12 @@
 import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
-import { NoteItem, equalItemAtEditable, editItem } from "@/utils/noteItem";
+import { equalItemAtEditable, editItem } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
 import NewTabLink from "@/components/NewTabLink";
 import { addItemDB, changePublishedDB, saveEditDB } from "@/utils/noteItemDB";
-import { changedNoteItems } from "@/utils/noteGroup";
+import { NoteItem, changedNoteItems } from "@/utils/noteGroup";
 
 const initializedItem = (id: number): NoteItem => ({
   title: "-",

@@ -1,10 +1,4 @@
-export type NoteItem = {
-  title?: string;
-  explanation?: string;
-  url?: string;
-  published?: boolean;
-  id: number;
-};
+import { NoteItem } from "@/utils/noteGroup";
 
 const editableprops = ["title", "explanation", "url"] as const;
 type EditableProps = Pick<NoteItem, typeof editableprops[number]>;

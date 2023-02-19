@@ -6,16 +6,15 @@ export type NoteItem = {
   id: number;
 };
 
-type EditableProps = Pick<NoteItem, "title" | "explanation" | "url">;
+const editableprops = ["title", "explanation", "url"] as const;
+type EditableProps = Pick<NoteItem, typeof editableprops[number]>;
 
-export function equalItem(
-  item1: NoteItem | undefined,
-  item2: NoteItem | undefined
-): boolean {
-  const isTitle: boolean = item1?.title == item2?.title;
-  const isExplanation: boolean = item1?.explanation == item2?.explanation;
-  const isUrl: boolean = item1?.url == item2?.url;
-  return isTitle && isExplanation && isUrl;
+export function equalItemAtEditable(item1: NoteItem, item2: NoteItem): boolean {
+  type Key = keyof EditableProps;
+  for (const prop of editableprops) {
+    if (item1[prop as Key] != item2[prop as Key]) return false;
+  }
+  return true;
 }
 
 export function editItem(item: NoteItem, change: EditableProps): NoteItem {

@@ -3,7 +3,7 @@ import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import {
   NoteItem,
-  equalItem,
+  equalItemAtEditable,
   editItem,
   changedPublished,
 } from "@/utils/noteItem";
@@ -31,7 +31,10 @@ export default function Home({ dbNoteItems }: PageProps) {
 
   async function addNote() {
     const lastItem: NoteItem | undefined = noteItems.at(-1);
-    if (!equalItem(lastItem, initializedItem(-1))) {
+    if (
+      lastItem == undefined ||
+      !equalItemAtEditable(lastItem, initializedItem(-1))
+    ) {
       const id = noteItems.length;
       setNoteItems([...noteItems, initializedItem(id)]);
       addItemDB(id);

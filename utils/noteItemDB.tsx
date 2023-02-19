@@ -1,13 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import { NoteItem } from "@/utils/noteGroup";
 
 const editableprops = ["title", "explanation", "url"] as const;
 type EditableProps = Pick<NoteItem, typeof editableprops[number]>;
 
-export async function isExistAtId(
-  id: string,
-  prisma: PrismaClient
-): Promise<boolean> {
+export async function isExistAtId(id: string, prisma: any): Promise<boolean> {
   const item = await prisma.noteItem.findFirst({ where: { id: id } });
   return item != null;
 }

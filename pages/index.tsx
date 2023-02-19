@@ -95,10 +95,9 @@ export default function Home({ dbNoteItems }: PageProps) {
     }
   }
 
-  function hiddenItem(item: NoteItem) {
-    // const newItem = changedPublished(item, false);
-    // setNoteItems(changedNoteItems(noteItems, newItem));
-    // changePublishedDB(newItem);
+  function hiddenItem(id: number) {
+    setNoteItems(noteItems.filter((itm) => itm.id != id));
+    changePublishedDB(id, false);
   }
 
   const NoteItem = ({ item }: { item: NoteItem }) => (
@@ -151,7 +150,7 @@ export default function Home({ dbNoteItems }: PageProps) {
             <div className="flex">
               <button
                 className="rounded-full w-4 h-4 bg-red-600 border"
-                onClick={() => hiddenItem(item)}
+                onClick={() => hiddenItem(item.id)}
               />
               <NoteItem item={item} />
             </div>

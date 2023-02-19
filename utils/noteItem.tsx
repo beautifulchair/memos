@@ -6,6 +6,8 @@ export type NoteItem = {
   id: number;
 };
 
+type EditableProps = Pick<NoteItem, "title" | "explanation" | "url">;
+
 export function equalItem(
   item1: NoteItem | undefined,
   item2: NoteItem | undefined
@@ -16,28 +18,12 @@ export function equalItem(
   return isTitle && isExplanation && isUrl;
 }
 
-export function changedTitle(
-  item: NoteItem,
-  title: string | undefined
-): NoteItem {
-  const newItem = item;
-  newItem.title = title;
-  return newItem;
-}
-
-export function changedExplanation(
-  item: NoteItem,
-  explanation: string | undefined
-): NoteItem {
-  const newTitle = item;
-  newTitle.explanation = explanation;
-  return newTitle;
-}
-
-export function changedUrl(item: NoteItem, url: string | undefined): NoteItem {
-  const newTitle = item;
-  newTitle.url = url;
-  return newTitle;
+export function editItem(item: NoteItem, change: EditableProps): NoteItem {
+  type key = keyof EditableProps;
+  for (const prop in change) {
+    item[prop as key] = change[prop as key];
+  }
+  return item;
 }
 
 export function changedPublished(item: NoteItem, published: boolean): NoteItem {

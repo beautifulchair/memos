@@ -4,9 +4,7 @@ import { useState } from "react";
 import {
   NoteItem,
   equalItem,
-  changedTitle,
-  changedUrl,
-  changedExplanation,
+  editItem,
   changedPublished,
 } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
@@ -52,7 +50,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     item: NoteItem
   ) {
     const target: HTMLTextAreaElement = e.currentTarget;
-    const newItem = changedTitle(item, target.value);
+    const newItem = editItem(item, { title: target.value });
     setNoteItems(changedNoteItems(noteItems, newItem));
     saveItemDB(newItem);
   }
@@ -65,7 +63,7 @@ export default function Home({ dbNoteItems }: PageProps) {
   }
   function blurOnUrl(e: React.FocusEvent<HTMLTextAreaElement>, item: NoteItem) {
     const target: HTMLTextAreaElement = e.currentTarget;
-    const newItem = changedUrl(item, target.value);
+    const newItem = editItem(item, { url: target.value });
     setNoteItems(changedNoteItems(noteItems, newItem));
     saveItemDB(newItem);
   }
@@ -85,7 +83,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     item: NoteItem
   ) {
     const target: HTMLTextAreaElement = e.currentTarget;
-    const newItem = changedExplanation(item, target.value);
+    const newItem = editItem(item, { explanation: target.value });
     setNoteItems(changedNoteItems(noteItems, newItem));
     saveItemDB(newItem);
   }

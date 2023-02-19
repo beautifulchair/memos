@@ -1,6 +1,6 @@
 import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   NoteItem,
@@ -14,8 +14,6 @@ import {
   changedPublished,
   changePublishedDB,
 } from "@/utils/noteItem";
-import prisma from "@/lib/prisma";
-import { GetServerSideProps } from "next";
 
 const initializedItem = (id: number): NoteItem => ({
   title: "-",
@@ -25,14 +23,20 @@ const initializedItem = (id: number): NoteItem => ({
   published: true,
 });
 
-type PageProps = {
-  dbNoteItems: NoteItem[];
-};
+type PageProps = {};
 
-export default function Home({ dbNoteItems }: PageProps) {
+export default function Home({}: PageProps) {
   // initial noteItems
-  const [noteItems, setNoteItems] = useState<NoteItem[]>(dbNoteItems);
-
+  const [noteItems, setNoteItems] = useState<NoteItem[]>([]);
+  useEffect(() => {
+    fetch("/api/noteItem/readAll")
+      .then((v) => {
+        v.json().then((v) => {
+          setNoteItems(v);
+        });
+      })
+      .catch(() => console.log(Function.name));
+  }, []);
   async function addNote() {
     const lastItem: NoteItem | undefined = noteItems.at(-1);
     if (!equalItem(lastItem, initializedItem(-1))) {
@@ -185,8 +189,3 @@ export default function Home({ dbNoteItems }: PageProps) {
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const dbNoteItems = await prisma.noteItem.findMany();
-  return { props: { dbNoteItems } };
-};

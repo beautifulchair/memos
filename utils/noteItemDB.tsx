@@ -1,12 +1,8 @@
 import { PrismaClient } from "@prisma/client";
+import { NoteItem } from "@/utils/noteItem";
 
-export type NoteItem = {
-  title?: string;
-  explanation?: string;
-  url?: string;
-  published?: boolean;
-  id: number;
-};
+const editableprops = ["title", "explanation", "url"] as const;
+type EditableProps = Pick<NoteItem, typeof editableprops[number]>;
 
 export async function isExistAtId(
   id: string,
@@ -16,17 +12,13 @@ export async function isExistAtId(
   return item != null;
 }
 
-export function saveItemDB(item: NoteItem) {
-  fetch("/api/noteItem/" + item.id + "/update", {
+export function saveEditDB(id: number, change: EditableProps) {
+  fetch("/api/noteItem/" + id + "/update", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      title: item.title,
-      explanation: item.explanation,
-      url: item.url,
-    }),
+    body: JSON.stringify(change),
   })
     .then((v) => {
       return v;
@@ -44,14 +36,14 @@ export function addItemDB(id: number) {
     });
 }
 
-export function changePublishedDB(item: NoteItem) {
-  fetch("/api/noteItem/" + item.id + "/update_published", {
+export function changePublishedDB(id: number, published: boolean) {
+  fetch("/api/noteItem/" + id + "/update_published", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      published: item.published,
+      published: published,
     }),
   })
     .then((v) => {

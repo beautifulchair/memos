@@ -5,7 +5,7 @@ import { NoteItem, equalItemAtEditable, editItem } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
 import NewTabLink from "@/components/NewTabLink";
-import { addItemDB, changePublishedDB, saveItemDB } from "@/utils/noteItemDB";
+import { addItemDB, changePublishedDB, saveEditDB } from "@/utils/noteItemDB";
 import { changedNoteItems } from "@/utils/noteGroup";
 
 const initializedItem = (id: number): NoteItem => ({
@@ -48,7 +48,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     const oldItem = noteItems.filter((itm) => itm.id == id)[0];
     const newItem = editItem(oldItem, { title: target.value });
     setNoteItems(changedNoteItems(noteItems, newItem));
-    saveItemDB(newItem);
+    saveEditDB(id, { title: target.value });
   }
   function keyDownOnURL(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key == "Enter" && !e.nativeEvent.isComposing) {
@@ -62,7 +62,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     const oldItem = noteItems.filter((itm) => itm.id == id)[0];
     const newItem = editItem(oldItem, { url: target.value });
     setNoteItems(changedNoteItems(noteItems, newItem));
-    saveItemDB(newItem);
+    saveEditDB(id, { url: target.value });
   }
   function keyDownOnExplanation(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     const target: HTMLTextAreaElement = e.currentTarget;
@@ -83,7 +83,7 @@ export default function Home({ dbNoteItems }: PageProps) {
     const oldItem = noteItems.filter((itm) => itm.id == id)[0];
     const newItem = editItem(oldItem, { explanation: target.value });
     setNoteItems(changedNoteItems(noteItems, newItem));
-    saveItemDB(newItem);
+    saveEditDB(id, { explanation: target.value });
   }
   function keyDownCaputureOnExplanation(
     e: React.KeyboardEvent<HTMLTextAreaElement>

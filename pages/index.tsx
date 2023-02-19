@@ -3,19 +3,17 @@ import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import {
   NoteItem,
-  changedNoteItems,
   equalItem,
   changedTitle,
   changedUrl,
   changedExplanation,
-  saveItemDB,
-  addItemDB,
   changedPublished,
-  changePublishedDB,
 } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
 import NewTabLink from "@/components/NewTabLink";
+import { addItemDB, changePublishedDB, saveItemDB } from "@/utils/noteItemDB";
+import { changedNoteItems } from "@/utils/noteGroup";
 
 const initializedItem = (id: number): NoteItem => ({
   title: "-",

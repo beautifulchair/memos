@@ -2,14 +2,11 @@ import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import Link from "next/link";
-import {
-  NoteItem,
-  changedNoteItems,
-  changedPublished,
-  changePublishedDB,
-} from "@/utils/noteItem";
+import { NoteItem, changedPublished } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
+import { changedNoteItems } from "@/utils/noteGroup";
+import { changePublishedDB } from "@/utils/noteItemDB";
 
 type PageProps = {
   dbNoteItems: NoteItem[];

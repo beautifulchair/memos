@@ -2,10 +2,9 @@ import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import Link from "next/link";
-import { NoteItem, changedPublished } from "@/utils/noteItem";
+import { NoteItem } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
-import { changedNoteItems } from "@/utils/noteGroup";
 import { changePublishedDB } from "@/utils/noteItemDB";
 
 type PageProps = {
@@ -16,15 +15,14 @@ export default function Unpublished({ dbNoteItems }: PageProps) {
   // initial noteItems
   const [noteItems, setNoteItems] = useState<NoteItem[]>(dbNoteItems);
 
-  function publishItem(item: NoteItem) {
-    const newItem = changedPublished(item, true);
-    setNoteItems(changedNoteItems(noteItems, newItem));
-    changePublishedDB(newItem);
+  function publishItem(id: number) {
+    setNoteItems(noteItems.filter((itm) => itm.id != id));
+    changePublishedDB(id, true);
   }
 
   function publishAll() {
     dbNoteItems.map((item) => {
-      publishItem(item);
+      publishItem(item.id);
     });
   }
 
@@ -65,7 +63,7 @@ export default function Unpublished({ dbNoteItems }: PageProps) {
             <div className="flex">
               <button
                 className="rounded-full w-4 h-4 bg-blue-600 border"
-                onClick={() => publishItem(item)}
+                onClick={() => publishItem(item.id)}
               />
               <NoteItem item={item} />
             </div>

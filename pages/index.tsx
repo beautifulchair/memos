@@ -43,12 +43,10 @@ export default function Home({ dbNoteItems }: PageProps) {
       e.currentTarget.blur();
     }
   }
-  function blurOnTitle(
-    e: React.FocusEvent<HTMLTextAreaElement>,
-    item: NoteItem
-  ) {
+  function blurOnTitle(e: React.FocusEvent<HTMLTextAreaElement>, id: number) {
     const target: HTMLTextAreaElement = e.currentTarget;
-    const newItem = editItem(item, { title: target.value });
+    const oldItem = noteItems.filter((itm) => itm.id == id)[0];
+    const newItem = editItem(oldItem, { title: target.value });
     setNoteItems(changedNoteItems(noteItems, newItem));
     saveItemDB(newItem);
   }
@@ -59,9 +57,10 @@ export default function Home({ dbNoteItems }: PageProps) {
       e.currentTarget.blur();
     }
   }
-  function blurOnUrl(e: React.FocusEvent<HTMLTextAreaElement>, item: NoteItem) {
+  function blurOnUrl(e: React.FocusEvent<HTMLTextAreaElement>, id: number) {
     const target: HTMLTextAreaElement = e.currentTarget;
-    const newItem = editItem(item, { url: target.value });
+    const oldItem = noteItems.filter((itm) => itm.id == id)[0];
+    const newItem = editItem(oldItem, { url: target.value });
     setNoteItems(changedNoteItems(noteItems, newItem));
     saveItemDB(newItem);
   }
@@ -78,10 +77,11 @@ export default function Home({ dbNoteItems }: PageProps) {
   }
   function blurOnExplanation(
     e: React.FocusEvent<HTMLTextAreaElement>,
-    item: NoteItem
+    id: number
   ) {
     const target: HTMLTextAreaElement = e.currentTarget;
-    const newItem = editItem(item, { explanation: target.value });
+    const oldItem = noteItems.filter((itm) => itm.id == id)[0];
+    const newItem = editItem(oldItem, { explanation: target.value });
     setNoteItems(changedNoteItems(noteItems, newItem));
     saveItemDB(newItem);
   }
@@ -109,7 +109,7 @@ export default function Home({ dbNoteItems }: PageProps) {
           rows={1}
           defaultValue={item.title}
           onKeyDown={(e) => keyDownOnTitle(e)}
-          onBlur={(e) => blurOnTitle(e, item)}
+          onBlur={(e) => blurOnTitle(e, item.id)}
           autoCorrect="off"
           spellCheck="false"
         />
@@ -123,7 +123,7 @@ export default function Home({ dbNoteItems }: PageProps) {
           rows={1}
           defaultValue={item.url}
           onKeyDown={(e) => keyDownOnURL(e)}
-          onBlur={(e) => blurOnUrl(e, item)}
+          onBlur={(e) => blurOnUrl(e, item.id)}
           autoCorrect="off"
           spellCheck="false"
         />
@@ -134,7 +134,7 @@ export default function Home({ dbNoteItems }: PageProps) {
         defaultValue={item.explanation}
         onKeyDown={(e) => keyDownOnExplanation(e)}
         onKeyDownCapture={(e) => keyDownCaputureOnExplanation(e)}
-        onBlur={(e) => blurOnExplanation(e, item)}
+        onBlur={(e) => blurOnExplanation(e, item.id)}
         autoCorrect="off"
         spellCheck="false"
       />

@@ -4,6 +4,7 @@ export type NoteItem = {
   title?: string;
   explanation?: string;
   url?: string;
+  published?: boolean;
   id: number;
 };
 
@@ -38,6 +39,12 @@ export function changedExplanation(
 export function changedUrl(item: NoteItem, url: string | undefined): NoteItem {
   const newTitle = item;
   newTitle.url = url;
+  return newTitle;
+}
+
+export function changedPublished(item: NoteItem, published: boolean): NoteItem {
+  const newTitle = item;
+  newTitle.published = published;
   return newTitle;
 }
 
@@ -82,6 +89,24 @@ export function saveItemDB(item: NoteItem) {
 export function addItemDB(id: number) {
   fetch("/api/noteItem/" + id + "/add")
     .then()
+    .catch(() => {
+      console.log(Function.name + "error");
+    });
+}
+
+export function changePublishedDB(item: NoteItem) {
+  fetch("/api/noteItem/" + item.id + "/update_published", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      published: item.published,
+    }),
+  })
+    .then((v) => {
+      return v;
+    })
     .catch(() => {
       console.log(Function.name + "error");
     });

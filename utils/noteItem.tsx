@@ -35,7 +35,7 @@ export function changedNoteItems(
   return newNoteItems;
 }
 
-export async function isExistAtId(id: string, prisma: any): Promise<boolean> {
+export async function isExistAtId(id: number, prisma: any): Promise<boolean> {
   const item = await prisma.noteItemData.findFirst({ where: { id: id } });
   return item != null;
 }

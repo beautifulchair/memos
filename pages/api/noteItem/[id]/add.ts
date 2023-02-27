@@ -6,7 +6,7 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const id = req.query.id as string;
+  const id: number = Number(req.query.id);
   if (await isExistAtId(id, prisma)) {
     //none
   } else {

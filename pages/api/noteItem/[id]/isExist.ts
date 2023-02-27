@@ -5,7 +5,7 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const id = req.query.id as string;
+  const id = Number(req.query.id);
   const post = await prisma.noteItemData.findFirst({
     where: {
       id: id,

@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
-import { NoteItem } from "@/utils/noteItem";
-import { isExistAtId } from "@/utils/noteItemDB";
+import { NoteItem, isExistAtId } from "@/utils/noteItem";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handle(

@@ -4,8 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
-import { changePublishedDB } from "@/utils/noteItemDB";
-import { NoteItem } from "@/utils/noteItem";
+import { NoteItem, changePublishedDB } from "@/utils/noteItem";
 
 type PageProps = {
   dbNoteItems: NoteItem[];

@@ -5,8 +5,13 @@ import { equalItemAtEditable, editItem } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
 import NewTabLink from "@/components/NewTabLink";
-import { addItemDB, changePublishedDB, saveEditDB } from "@/utils/noteItemDB";
-import { NoteItem, changedNoteItems } from "@/utils/noteItem";
+import {
+  NoteItem,
+  changedNoteItems,
+  addItemDB,
+  changePublishedDB,
+  saveEditDB,
+} from "@/utils/noteItem";
 
 const initializedItem = (id: number): NoteItem => ({
   title: "-",

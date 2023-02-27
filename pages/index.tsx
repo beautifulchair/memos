@@ -18,7 +18,6 @@ const initializedItem = (id: number): NoteItem => ({
   explanation: "~",
   url: "",
   id: id,
-  published: true,
 });
 
 type PageProps = {
@@ -148,7 +147,6 @@ export default function Home({ dbNoteItems }: PageProps) {
   const NoteTable = ({ nis }: { nis: NoteItem[] }) => (
     <ol className="list-decimal mt-10">
       {nis
-        .filter((itm) => itm.published == true)
         .sort((i1, i2) => i1.id - i2.id)
         .map((item) => (
           <li key={item.id} className="mt-7 border-b-2 border-dashed pb-3">
@@ -185,6 +183,8 @@ export default function Home({ dbNoteItems }: PageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const dbNoteItems = await prisma.noteItemData.findMany();
+  const dbNoteItems = await prisma.noteItemData.findMany({
+    where: { published: true },
+  });
   return { props: { dbNoteItems } };
 };

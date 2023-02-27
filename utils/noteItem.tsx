@@ -2,7 +2,6 @@ export type NoteItem = {
   title?: string;
   explanation?: string;
   url?: string;
-  published?: boolean;
   id: number;
 };
 

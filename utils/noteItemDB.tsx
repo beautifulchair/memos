@@ -1,4 +1,4 @@
-import { NoteItem } from "@/utils/noteGroup";
+import { NoteItem } from "@/utils/noteItem";
 
 const editableprops = ["title", "explanation", "url"] as const;
 type EditableProps = Pick<NoteItem, typeof editableprops[number]>;

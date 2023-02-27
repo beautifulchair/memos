@@ -1,4 +1,10 @@
-import { NoteItem } from "@/utils/noteGroup";
+export type NoteItem = {
+  title?: string;
+  explanation?: string;
+  url?: string;
+  published?: boolean;
+  id: number;
+};
 
 const editableprops = ["title", "explanation", "url"] as const;
 type EditableProps = Pick<NoteItem, typeof editableprops[number]>;
@@ -20,4 +26,14 @@ export function editItem(
     item[prop as key] = change[prop as key];
   }
   return item;
+}
+
+export function changedNoteItems(
+  noteItems: NoteItem[],
+  newItem: NoteItem
+): NoteItem[] {
+  const newNoteItems = noteItems.map((itm) =>
+    itm.id == newItem.id ? newItem : itm
+  );
+  return newNoteItems;
 }

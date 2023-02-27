@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { NoteItem } from "@/utils/noteGroup";
+import { NoteItem } from "@/utils/noteItem";
 import { isExistAtId } from "@/utils/noteItemDB";
 import { NextApiRequest, NextApiResponse } from "next";
 

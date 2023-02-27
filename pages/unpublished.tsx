@@ -5,7 +5,7 @@ import Link from "next/link";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
 import { changePublishedDB } from "@/utils/noteItemDB";
-import { NoteItem } from "@/utils/noteGroup";
+import { NoteItem } from "@/utils/noteItem";
 
 type PageProps = {
   dbNoteItems: NoteItem[];

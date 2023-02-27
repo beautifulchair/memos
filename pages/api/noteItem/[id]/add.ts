@@ -10,7 +10,7 @@ export default async function handle(
   if (await isExistAtId(id, prisma)) {
     //none
   } else {
-    const post = await prisma.noteItem.create({
+    const post = await prisma.noteItemData.create({
       data: {
         id: id,
         title: "-",

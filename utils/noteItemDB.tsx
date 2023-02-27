@@ -4,7 +4,7 @@ const editableprops = ["title", "explanation", "url"] as const;
 type EditableProps = Pick<NoteItem, typeof editableprops[number]>;
 
 export async function isExistAtId(id: string, prisma: any): Promise<boolean> {
-  const item = await prisma.noteItem.findFirst({ where: { id: id } });
+  const item = await prisma.noteItemData.findFirst({ where: { id: id } });
   return item != null;
 }
 

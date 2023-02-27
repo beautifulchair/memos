@@ -10,10 +10,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model NoteItem {
+model NoteItemData {
   title String
   explanation String
   url String
-  published Boolean @default(true)
+  published Boolean
   id String @unique
 }

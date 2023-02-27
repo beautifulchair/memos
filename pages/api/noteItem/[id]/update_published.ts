@@ -13,7 +13,7 @@ export default async function handle(
     const data = {
       published: published,
     };
-    const post = await prisma.noteItem.update({
+    const post = await prisma.noteItemData.update({
       where: { id: id },
       data: data,
     });

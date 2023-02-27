@@ -180,6 +180,6 @@ export default function Home({ dbNoteItems }: PageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const dbNoteItems = await prisma.noteItem.findMany();
+  const dbNoteItems = await prisma.noteItemData.findMany();
   return { props: { dbNoteItems } };
 };

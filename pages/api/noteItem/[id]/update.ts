@@ -6,10 +6,10 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const id = req.query.id as string;
+  const id = Number(req.query.id);
   if (await isExistAtId(id, prisma)) {
     const { title, explanation, url } = req.body;
-    const post = await prisma.noteItem.update({
+    const post = await prisma.noteItemData.update({
       where: { id: id },
       data: { title: title, explanation: explanation, url: url },
     });

@@ -1,28 +1,23 @@
 import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
-import {
-  NoteItem,
-  changedNoteItems,
-  equalItem,
-  changedTitle,
-  changedUrl,
-  changedExplanation,
-  saveItemDB,
-  addItemDB,
-  changedPublished,
-  changePublishedDB,
-} from "@/utils/noteItem";
+import { equalItemAtEditable, editItem } from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
 import NewTabLink from "@/components/NewTabLink";
+import {
+  NoteItem,
+  changedNoteItems,
+  addItemDB,
+  changePublishedDB,
+  saveEditDB,
+} from "@/utils/noteItem";
 
 const initializedItem = (id: number): NoteItem => ({
   title: "-",
   explanation: "~",
   url: "",
   id: id,
-  published: true,
 });
 
 type PageProps = {
@@ -35,7 +30,10 @@ export default function Home({ dbNoteItems }: PageProps) {
 
   async function addNote() {
     const lastItem: NoteItem | undefined = noteItems.at(-1);
-    if (!equalItem(lastItem, initializedItem(-1))) {
+    if (
+      lastItem == undefined ||
+      !equalItemAtEditable(lastItem, initializedItem(-1))
+    ) {
       const id = noteItems.length;
       setNoteItems([...noteItems, initializedItem(id)]);
       addItemDB(id);
@@ -49,14 +47,12 @@ export default function Home({ dbNoteItems }: PageProps) {
       e.currentTarget.blur();
     }
   }
-  function blurOnTitle(
-    e: React.FocusEvent<HTMLTextAreaElement>,
-    item: NoteItem
-  ) {
+  function blurOnTitle(e: React.FocusEvent<HTMLTextAreaElement>, id: number) {
     const target: HTMLTextAreaElement = e.currentTarget;
-    const newItem = changedTitle(item, target.value);
+    const oldItem = noteItems.filter((itm) => itm.id == id)[0];
+    const newItem = editItem(oldItem, { title: target.value });
     setNoteItems(changedNoteItems(noteItems, newItem));
-    saveItemDB(newItem);
+    saveEditDB(id, { title: target.value });
   }
   function keyDownOnURL(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key == "Enter" && !e.nativeEvent.isComposing) {
@@ -65,11 +61,12 @@ export default function Home({ dbNoteItems }: PageProps) {
       e.currentTarget.blur();
     }
   }
-  function blurOnUrl(e: React.FocusEvent<HTMLTextAreaElement>, item: NoteItem) {
+  function blurOnUrl(e: React.FocusEvent<HTMLTextAreaElement>, id: number) {
     const target: HTMLTextAreaElement = e.currentTarget;
-    const newItem = changedUrl(item, target.value);
+    const oldItem = noteItems.filter((itm) => itm.id == id)[0];
+    const newItem = editItem(oldItem, { url: target.value });
     setNoteItems(changedNoteItems(noteItems, newItem));
-    saveItemDB(newItem);
+    saveEditDB(id, { url: target.value });
   }
   function keyDownOnExplanation(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     const target: HTMLTextAreaElement = e.currentTarget;
@@ -84,12 +81,13 @@ export default function Home({ dbNoteItems }: PageProps) {
   }
   function blurOnExplanation(
     e: React.FocusEvent<HTMLTextAreaElement>,
-    item: NoteItem
+    id: number
   ) {
     const target: HTMLTextAreaElement = e.currentTarget;
-    const newItem = changedExplanation(item, target.value);
+    const oldItem = noteItems.filter((itm) => itm.id == id)[0];
+    const newItem = editItem(oldItem, { explanation: target.value });
     setNoteItems(changedNoteItems(noteItems, newItem));
-    saveItemDB(newItem);
+    saveEditDB(id, { explanation: target.value });
   }
   function keyDownCaputureOnExplanation(
     e: React.KeyboardEvent<HTMLTextAreaElement>
@@ -101,10 +99,9 @@ export default function Home({ dbNoteItems }: PageProps) {
     }
   }
 
-  function hiddenItem(item: NoteItem) {
-    const newItem = changedPublished(item, false);
-    setNoteItems(changedNoteItems(noteItems, newItem));
-    changePublishedDB(newItem);
+  function hiddenItem(id: number) {
+    setNoteItems(noteItems.filter((itm) => itm.id != id));
+    changePublishedDB(id, false);
   }
 
   const NoteItem = ({ item }: { item: NoteItem }) => (
@@ -115,7 +112,7 @@ export default function Home({ dbNoteItems }: PageProps) {
           rows={1}
           defaultValue={item.title}
           onKeyDown={(e) => keyDownOnTitle(e)}
-          onBlur={(e) => blurOnTitle(e, item)}
+          onBlur={(e) => blurOnTitle(e, item.id)}
           autoCorrect="off"
           spellCheck="false"
         />
@@ -129,7 +126,7 @@ export default function Home({ dbNoteItems }: PageProps) {
           rows={1}
           defaultValue={item.url}
           onKeyDown={(e) => keyDownOnURL(e)}
-          onBlur={(e) => blurOnUrl(e, item)}
+          onBlur={(e) => blurOnUrl(e, item.id)}
           autoCorrect="off"
           spellCheck="false"
         />
@@ -140,7 +137,7 @@ export default function Home({ dbNoteItems }: PageProps) {
         defaultValue={item.explanation}
         onKeyDown={(e) => keyDownOnExplanation(e)}
         onKeyDownCapture={(e) => keyDownCaputureOnExplanation(e)}
-        onBlur={(e) => blurOnExplanation(e, item)}
+        onBlur={(e) => blurOnExplanation(e, item.id)}
         autoCorrect="off"
         spellCheck="false"
       />
@@ -150,14 +147,13 @@ export default function Home({ dbNoteItems }: PageProps) {
   const NoteTable = ({ nis }: { nis: NoteItem[] }) => (
     <ol className="list-decimal mt-10">
       {nis
-        .filter((itm) => itm.published == true)
         .sort((i1, i2) => i1.id - i2.id)
         .map((item) => (
           <li key={item.id} className="mt-7 border-b-2 border-dashed pb-3">
             <div className="flex">
               <button
                 className="rounded-full w-4 h-4 bg-red-600 border"
-                onClick={() => hiddenItem(item)}
+                onClick={() => hiddenItem(item.id)}
               />
               <NoteItem item={item} />
             </div>
@@ -187,6 +183,8 @@ export default function Home({ dbNoteItems }: PageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const dbNoteItems = await prisma.noteItem.findMany();
+  const dbNoteItems = await prisma.noteItemData.findMany({
+    where: { published: true },
+  });
   return { props: { dbNoteItems } };
 };

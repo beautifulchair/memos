@@ -1,51 +1,27 @@
-import { PrismaClient } from "@prisma/client";
-
 export type NoteItem = {
   title?: string;
   explanation?: string;
   url?: string;
-  published?: boolean;
   id: number;
 };
 
-export function equalItem(
-  item1: NoteItem | undefined,
-  item2: NoteItem | undefined
-): boolean {
-  const isTitle: boolean = item1?.title == item2?.title;
-  const isExplanation: boolean = item1?.explanation == item2?.explanation;
-  const isUrl: boolean = item1?.url == item2?.url;
-  return isTitle && isExplanation && isUrl;
+const editableprops = ["title", "explanation", "url"] as const;
+type NoteEdit = Pick<NoteItem, typeof editableprops[number]>;
+
+export function equalItemAtEditable(item1: NoteItem, item2: NoteItem): boolean {
+  type Key = keyof NoteEdit;
+  for (const prop of editableprops) {
+    if (item1[prop as Key] != item2[prop as Key]) return false;
+  }
+  return true;
 }
 
-export function changedTitle(
-  item: NoteItem,
-  title: string | undefined
-): NoteItem {
-  const newItem = item;
-  newItem.title = title;
-  return newItem;
-}
-
-export function changedExplanation(
-  item: NoteItem,
-  explanation: string | undefined
-): NoteItem {
-  const newTitle = item;
-  newTitle.explanation = explanation;
-  return newTitle;
-}
-
-export function changedUrl(item: NoteItem, url: string | undefined): NoteItem {
-  const newTitle = item;
-  newTitle.url = url;
-  return newTitle;
-}
-
-export function changedPublished(item: NoteItem, published: boolean): NoteItem {
-  const newTitle = item;
-  newTitle.published = published;
-  return newTitle;
+export function editItem(item: NoteItem, change: Partial<NoteEdit>): NoteItem {
+  type key = keyof NoteEdit;
+  for (const prop in change) {
+    item[prop as key] = change[prop as key];
+  }
+  return item;
 }
 
 export function changedNoteItems(
@@ -58,25 +34,18 @@ export function changedNoteItems(
   return newNoteItems;
 }
 
-export async function isExistAtId(
-  id: string,
-  prisma: PrismaClient
-): Promise<boolean> {
-  const item = await prisma.noteItem.findFirst({ where: { id: id } });
+export async function isExistAtId(id: number, prisma: any): Promise<boolean> {
+  const item = await prisma.noteItemData.findFirst({ where: { id: id } });
   return item != null;
 }
 
-export function saveItemDB(item: NoteItem) {
-  fetch("/api/noteItem/" + item.id + "/update", {
+export function saveEditDB(id: number, change: Partial<NoteEdit>) {
+  fetch("/api/noteItem/" + id + "/update", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      title: item.title,
-      explanation: item.explanation,
-      url: item.url,
-    }),
+    body: JSON.stringify(change),
   })
     .then((v) => {
       return v;
@@ -94,14 +63,14 @@ export function addItemDB(id: number) {
     });
 }
 
-export function changePublishedDB(item: NoteItem) {
-  fetch("/api/noteItem/" + item.id + "/update_published", {
+export function changePublishedDB(id: number, published: boolean) {
+  fetch("/api/noteItem/" + id + "/update_published", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      published: item.published,
+      published: published,
     }),
   })
     .then((v) => {

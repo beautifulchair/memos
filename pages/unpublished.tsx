@@ -2,14 +2,9 @@ import Head from "next/head";
 import MainLayout from "@/components/MainLayout";
 import { useState } from "react";
 import Link from "next/link";
-import {
-  NoteItem,
-  changedNoteItems,
-  changedPublished,
-  changePublishedDB,
-} from "@/utils/noteItem";
 import prisma from "@/lib/prisma";
 import { GetServerSideProps } from "next";
+import { NoteItem, changePublishedDB } from "@/utils/noteItem";
 
 type PageProps = {
   dbNoteItems: NoteItem[];
@@ -19,15 +14,14 @@ export default function Unpublished({ dbNoteItems }: PageProps) {
   // initial noteItems
   const [noteItems, setNoteItems] = useState<NoteItem[]>(dbNoteItems);
 
-  function publishItem(item: NoteItem) {
-    const newItem = changedPublished(item, true);
-    setNoteItems(changedNoteItems(noteItems, newItem));
-    changePublishedDB(newItem);
+  function publishItem(id: number) {
+    setNoteItems(noteItems.filter((itm) => itm.id != id));
+    changePublishedDB(id, true);
   }
 
   function publishAll() {
     dbNoteItems.map((item) => {
-      publishItem(item);
+      publishItem(item.id);
     });
   }
 
@@ -61,14 +55,13 @@ export default function Unpublished({ dbNoteItems }: PageProps) {
   const NoteTable = ({ nis }: { nis: NoteItem[] }) => (
     <ol className="list-decimal mt-10">
       {nis
-        .filter((itm) => itm.published == false)
         .sort((i1, i2) => i1.id - i2.id)
         .map((item) => (
           <li key={item.id} className="mt-7 border-b-2 border-dashed pb-3">
             <div className="flex">
               <button
                 className="rounded-full w-4 h-4 bg-blue-600 border"
-                onClick={() => publishItem(item)}
+                onClick={() => publishItem(item.id)}
               />
               <NoteItem item={item} />
             </div>
@@ -98,6 +91,8 @@ export default function Unpublished({ dbNoteItems }: PageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const dbNoteItems = await prisma.noteItem.findMany();
+  const dbNoteItems = await prisma.noteItemData.findMany({
+    where: { published: false },
+  });
   return { props: { dbNoteItems } };
 };

@@ -15,5 +15,5 @@ model NoteItemData {
   explanation String
   url String
   published Boolean
-  id String @unique
+  id Int @unique
 }
